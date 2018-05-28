@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  toulbar2restcore:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"

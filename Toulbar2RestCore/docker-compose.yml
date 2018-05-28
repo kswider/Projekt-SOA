@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  toulbar2restcore:
+    image: toulbar2restcore
+    build:
+      context: .
+      dockerfile: Toulbar2RestCore/Dockerfile
