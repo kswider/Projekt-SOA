@@ -90,12 +90,14 @@ namespace Toulbar2RestCore.Controllers
             //string directoryPath = @"/usr/bin/";
             string fileFullPath;
             Dictionary<int, string> dict;
+            Console.WriteLine("Tworze plik dla toulbara");
             (fileFullPath, dict) = CreateWCNFFile(value, directoryPath);
             var output = new StringBuilder();
 
             try
             {
                 Process process = new Process();
+                Console.WriteLine("Startuje proces");
                 process.StartInfo.FileName = $"toulbar2";
                 process.StartInfo.Arguments = $"-s {fileFullPath}";
                 process.StartInfo.UseShellExecute = false;
@@ -108,7 +110,9 @@ namespace Toulbar2RestCore.Controllers
                 string error = process.StandardError.ReadToEnd();
                 output.Append(process.StandardOutput.ReadToEnd());
                 process.Close();
+                Console.WriteLine("Koncze proces");
                 System.IO.File.Delete(fileFullPath);
+                Console.WriteLine("Usuwam plik");
                 //return CreateResponse(output.ToString(),dict);
                 /*
                 if (System.IO.File.Exists($@"{directoryPath}\examples\{id}.res"))
@@ -126,11 +130,13 @@ namespace Toulbar2RestCore.Controllers
             {
                 output.Append("\nWystąpił błąd! Czy na pewno wysłałeś poprawny plik? Logi:\n");
                 output.Append(e.StackTrace);
-                Console.Out.WriteLine(e.StackTrace);
+                Console.WriteLine($"Stacktrace: {e.StackTrace}");
+                //Console.Out.WriteLine(e.StackTrace);
             }
 
             // Creating response:
             var response = new ResponseModel();
+            Console.WriteLine($"Parsowanie regexpem:");
             Regex rgx = new Regex(@"(New solution:) (\d+) (.*\n) (.*)");
             var match = rgx.Match(output.ToString());
             int maxWeight = value.Functions.Select(x => x.Weight).Sum();
@@ -216,6 +222,7 @@ namespace Toulbar2RestCore.Controllers
 
             Random random = new Random();
             string fileFullPath = $"{directoryPath}{random.Next(10000)}tmp.wcnf";
+            Console.WriteLine($"Sciezka pliku: {fileFullPath}");
             System.IO.File.WriteAllText(fileFullPath, sb.ToString());
 
             return (fileFullPath, reverseVariablesMap);
