@@ -13,13 +13,6 @@ namespace Toulbar2RestCore.Controllers
     [Route("/Example")]
     public class ExampleController : Controller
     {
-        // GET: api/Example
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         // GET: api/Example/5
         public string Get(int id)
         {
@@ -65,25 +58,6 @@ namespace Toulbar2RestCore.Controllers
             }
 
             return output.ToString();
-        }
-
-
-        // POST: api/Example
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-        
-        // PUT: api/Example/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
