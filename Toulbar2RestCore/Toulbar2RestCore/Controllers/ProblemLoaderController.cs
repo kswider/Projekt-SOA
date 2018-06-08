@@ -18,7 +18,7 @@ namespace Toulbar2RestCore.Controllers
 
         // POST: api/ProblemLoader
         [Route("Toulbar2REST/ProblemLoader/wcsp")]
-        [HttpOptions]
+        [HttpPost]
         public ResponseModel Post([FromBody]WCSPModel value)
         {
             //string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
@@ -85,7 +85,7 @@ namespace Toulbar2RestCore.Controllers
 
         // POST: api/ProblemLoader
         [Route("Toulbar2REST/ProblemLoader/wcnf")]
-        [HttpOptions]
+        [HttpPost]
         public ResponseModel Post([FromBody]WCNFModel value)
         {
             //string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
@@ -139,7 +139,7 @@ namespace Toulbar2RestCore.Controllers
             // Creating response:
             var response = new ResponseModel();
             Console.WriteLine($"Parsowanie regexpem:");
-            Regex rgx = new Regex(@"(New solution:) (\d+) (.*\n) (.*)");
+            Regex rgx = new Regex(@"(New solution:) (\d+) (.*\n) (.*)\n.*and (\d+)");
             var match = rgx.Match(output.ToString());
             int maxWeight = value.Functions.Select(x => x.Weight).Sum();
             int weight = int.Parse(match.Groups[2].Value);
@@ -152,7 +152,8 @@ namespace Toulbar2RestCore.Controllers
                 response.Variables.Add(new Variable() { Name = dict[counter], Value = v });
                 counter++;
             }
-
+            int time = int.Parse(match.Groups[5].Value);
+            response.Time = time;
             return response;
         }
 
