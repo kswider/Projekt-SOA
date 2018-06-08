@@ -19,7 +19,8 @@ namespace Toulbar2RestCore
         public async Task Invoke(HttpContext context)
         {
             this.BeginInvoke(context);
-            await this._next.Invoke(context);
+            if (context.Request.Method != "OPTIONS")
+                await this._next.Invoke(context);
         }
 
         private async void BeginInvoke(HttpContext context)
