@@ -13,16 +13,16 @@ using Toulbar2RestCore.Models.InternalClasses;
 namespace Toulbar2RestCore.Controllers
 {
     [Produces("application/json")]
-    [Route("Toulbar2REST/ProblemLoader")]
     public class ProblemLoaderController : Controller
     {
-        /*
+
         // POST: api/ProblemLoader
-        [HttpPost]
+        [Route("Toulbar2REST/ProblemLoader/wcsp")]
+        [HttpOptions]
         public ResponseModel Post([FromBody]WCSPModel value)
         {
-            string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
-            //string directoryPath = @"/usr/bin/";
+            //string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
+            string directoryPath = @"";
             string fileFullPath;
             Dictionary<int, string> dict;
             (fileFullPath, dict) = CreateWCSPFile(value, directoryPath);
@@ -30,7 +30,7 @@ namespace Toulbar2RestCore.Controllers
             try
             {
                 Process process = new Process();
-                process.StartInfo.FileName = $"{directoryPath}toulbar2.exe";
+                process.StartInfo.FileName = $"{directoryPath}toulbar2";
                 process.StartInfo.Arguments = $"-s {fileFullPath}";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardOutput = true;
@@ -55,6 +55,7 @@ namespace Toulbar2RestCore.Controllers
                 {
                     output.Append("Nie znaleziono rozwiązania dla danego problemu!");
                 }
+                */
             }
             catch (Exception e)
             {
@@ -81,13 +82,14 @@ namespace Toulbar2RestCore.Controllers
 
             return response;
         }
-        */
+
         // POST: api/ProblemLoader
-        [HttpPost]
+        [Route("Toulbar2REST/ProblemLoader/wcnf")]
+        [HttpOptions]
         public ResponseModel Post([FromBody]WCNFModel value)
         {
+            //string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
             string directoryPath = @"";
-            //string directoryPath = @"/usr/bin/";
             string fileFullPath;
             Dictionary<int, string> dict;
             Console.WriteLine("Tworze plik dla toulbara");
@@ -98,7 +100,7 @@ namespace Toulbar2RestCore.Controllers
             {
                 Process process = new Process();
                 Console.WriteLine("Startuje proces");
-                process.StartInfo.FileName = $"toulbar2";
+                process.StartInfo.FileName = $@"{directoryPath}toulbar2";
                 process.StartInfo.Arguments = $"-s {fileFullPath}";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardOutput = true;

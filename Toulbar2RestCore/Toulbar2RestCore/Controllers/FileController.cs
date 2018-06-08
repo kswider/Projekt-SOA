@@ -16,10 +16,11 @@ namespace Toulbar2RestCore.Controllers
     public class FileController : Controller
     {
         // POST: api/File
+        [HttpOptions]
         public string Post([FromBody]RawTextFileModel file)
         {   
-            string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
-            //string directoryPath = @"/usr/bin/";
+            //string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
+            string directoryPath = @"";
             Random random = new Random();
             string fileFullPath = $"{directoryPath}{random.Next(10000)}tmp.{file.Format}";
             System.IO.File.WriteAllText(fileFullPath, file.Data);
@@ -28,7 +29,7 @@ namespace Toulbar2RestCore.Controllers
             try
             {
                 Process process = new Process();
-                process.StartInfo.FileName = $"{directoryPath}toulbar2.exe";
+                process.StartInfo.FileName = $"{directoryPath}toulbar2";
                 process.StartInfo.Arguments = $"-s {fileFullPath}";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardOutput = true;

@@ -14,10 +14,11 @@ namespace Toulbar2RestCore.Controllers
     public class ExampleController : Controller
     {
         // GET: api/Example/5
+        [HttpGet]
         public string Get(int id)
         {
             //string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
-            string directoryPath = @"/usr/bin/";
+            string directoryPath = @"";
             //            string trailer;
             //           if (id == 2)
             //             trailer = ".wcnf";
