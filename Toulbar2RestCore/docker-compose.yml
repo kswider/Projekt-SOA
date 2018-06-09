@@ -6,3 +6,6 @@ services:
     build:
       context: .
       dockerfile: Toulbar2RestCore/Dockerfile
+    ports:
+     - 8080:80
+     - 8081:443
