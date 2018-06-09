@@ -1,0 +1,6 @@
+{
+  "certificateSettings": {
+    "fileName": "key.pfx",
+    "password": "certDocker"
+  }
+}
