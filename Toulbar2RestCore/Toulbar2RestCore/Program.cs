@@ -34,7 +34,7 @@ namespace Toulbar2RestCore
                 options =>
                 {
                     options.AddServerHeader = false;
-                    options.Listen(IPAddress.Loopback, 443, listenOptions =>
+                    options.Listen(IPAddress.Any, 443, listenOptions =>
                     {
                         listenOptions.UseHttps(certificate);
                     });
@@ -43,7 +43,6 @@ namespace Toulbar2RestCore
             .UseConfiguration(config)
             .UseContentRoot(Directory.GetCurrentDirectory())
             .UseStartup<Startup>()
-            .UseUrls("https://localhost:443")
             .Build();
 
             host.Run();
