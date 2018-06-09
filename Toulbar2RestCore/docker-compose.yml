@@ -2,6 +2,7 @@ version: '3'
 
 services:
   toulbar2restcore:
+    container_name: soa
     image: toulbar2restcore
     build:
       context: .
