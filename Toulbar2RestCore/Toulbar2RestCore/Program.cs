@@ -40,7 +40,7 @@ namespace Toulbar2RestCore
                     options =>
                     {
                         options.AddServerHeader = false;
-                        options.Listen(IPAddress.Any, 443, listenOptions =>
+                        options.Listen(IPAddress.Any, 8080, listenOptions =>
                         {
                             listenOptions.UseHttps(certificate);
                         });

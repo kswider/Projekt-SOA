@@ -4,12 +4,10 @@ services:
   toulbar2restcore:
     container_name: soa
     image: toulbar2restcore
-    build:
-      context: .
-      dockerfile: Toulbar2RestCore/Dockerfile
+    user: ${DEV_UID:-1000}:${DEV_GID:-100}
+    build: ./Toulbar2RestCore
     ports:
-     - 8080:80
-     - 8081:443
+     - 8080:8080
     volumes:
      - ./Toulbar2RestCore:/app
      - ./certs:/app/certs
