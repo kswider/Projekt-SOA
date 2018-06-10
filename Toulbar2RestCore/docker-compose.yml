@@ -11,4 +11,5 @@ services:
      - 8080:80
      - 8081:443
     volumes:
+     - ./Toulbar2RestCore:/app
      - ./certs:/app/certs

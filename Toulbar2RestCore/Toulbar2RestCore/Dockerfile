@@ -10,4 +10,4 @@ RUN printf "\ndeb http://ftp.debian.org/debian unstable main contrib non-free" >
 RUN printf "\ndeb-src http://ftp.debian.org/debian unstable main contrib non-free\n" >> /etc/apt/sources.list
 RUN apt update && apt -y install toulbar2
 
-ENTRYPOINT ["dotnet", "Toulbar2RestCore.dll"]
+CMD ["dotnet", "watch", "--verbose", "run"]
