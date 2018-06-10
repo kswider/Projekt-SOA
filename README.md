@@ -1,3 +1,6 @@
-# HTTPS
+# toulbar2 REST
 
-Place key.pfx under certs directory.
+# Setting up HTTPS
+
+Just go to **certs** directory and rename **key.pfx.example** to **key.pfx**.
+
