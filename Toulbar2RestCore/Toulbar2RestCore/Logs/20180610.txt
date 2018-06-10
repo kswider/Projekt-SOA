@@ -1,0 +1,5 @@
+2018-06-10T11:50:40.8889803+02:00  [WRN] Unable to bind to "http://localhost:63941" on the "IPv6 loopback" interface: '"Error -99 EADDRNOTAVAIL address not available"'. (38217649)
+2018-06-10T11:52:02.4506305+02:00  [WRN] Unable to bind to "http://localhost:63941" on the "IPv6 loopback" interface: '"Error -99 EADDRNOTAVAIL address not available"'. (38217649)
+2018-06-10T11:52:07.3655102+02:00 0HLEEMV9VA25I:00000001 [INF] Request starting HTTP/1.1 POST http://localhost:63941/api/File application/json 38 (ca22a1cb)
+2018-06-10T11:52:07.4437756+02:00 0HLEEMV9VA25I:00000001 [INF] Request finished in 82.1586ms 404  (791a596a)
+2018-06-10T12:20:28.0560584+02:00  [WRN] Unable to bind to "http://localhost:63941" on the "IPv6 loopback" interface: '"Error -99 EADDRNOTAVAIL address not available"'. (38217649)

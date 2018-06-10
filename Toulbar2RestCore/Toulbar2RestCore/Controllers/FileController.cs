@@ -8,17 +8,23 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Toulbar2RestCore.Models;
-
+using Microsoft.Extensions.Logging;
 namespace Toulbar2RestCore.Controllers
 {
     [Produces("application/json")]
     [Route("Toulbar2REST/File")]
     public class FileController : Controller
     {
+        private readonly ILogger _logger;
+        
+        public FileController(ILoggerFactory logger){
+            this._logger = logger.CreateLogger("Toulbar2RestCore.Controllers.FileController");
+        }
         // POST: api/File
         [HttpOptions]
         public string Post([FromBody]RawTextFileModel file)
-        {   
+        { 
+            this._logger.LogInformation(LoggerEvents.RequestPassed, "Processing request");  
             //string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
             string directoryPath = @"";
             Random random = new Random();
@@ -56,6 +62,7 @@ namespace Toulbar2RestCore.Controllers
                 }
                 */
                 System.IO.File.Delete(fileFullPath);
+                this._logger.LogInformation(LoggerEvents.FileLoaded, "File succesfully loaded");
 
             }
             catch (Exception e)
@@ -63,6 +70,7 @@ namespace Toulbar2RestCore.Controllers
                 output.Append("\nWystąpił błąd! Czy na pewno wysłałeś poprawny plik? Logi:\n");
                 output.Append(e.StackTrace);
                 Console.Out.WriteLine(e.StackTrace);
+                this._logger.LogError(LoggerEvents.FileError, e, "An exception occured");
             }
 
             return output.ToString();

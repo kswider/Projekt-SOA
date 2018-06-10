@@ -9,18 +9,25 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Toulbar2RestCore.Models;
 using Toulbar2RestCore.Models.InternalClasses;
+using Microsoft.Extensions.Logging;
 
 namespace Toulbar2RestCore.Controllers
 {
     [Produces("application/json")]
     public class ProblemLoaderController : Controller
     {
+        private readonly ILogger _logger;
+        
+        public ProblemLoaderController(ILoggerFactory logger){
+            this._logger = logger.CreateLogger("Toulbar2RestCore.Controllers.ProblemLoaderController");
+        }
 
         // POST: api/ProblemLoader
         [Route("Toulbar2REST/ProblemLoader/wcsp")]
         [HttpPost]
         public ResponseModel Post([FromBody]WCSPModel value)
         {
+            this._logger.LogInformation(LoggerEvents.RequestPassed, "Processing request ...");
             //string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
             string directoryPath = @"";
             string fileFullPath;
@@ -56,12 +63,14 @@ namespace Toulbar2RestCore.Controllers
                     output.Append("Nie znaleziono rozwiązania dla danego problemu!");
                 }
                 */
+                this._logger.LogInformation(LoggerEvents.ProblemLoaded, "Problem succesfully loaded");
             }
             catch (Exception e)
             {
                 output.Append("\nWystąpił błąd! Czy na pewno wysłałeś poprawny plik? Logi:\n");
                 output.Append(e.StackTrace);
                 Console.Out.WriteLine(e.StackTrace);
+                this._logger.LogError(LoggerEvents.ProblemError, e, "An exception occured");
             }
 
             // Creating response:
@@ -80,6 +89,8 @@ namespace Toulbar2RestCore.Controllers
                 counter++;
             }
 
+            this._logger.LogInformation(LoggerEvents.ResponseCreated, "Succesfully created response");
+
             return response;
         }
 
@@ -88,17 +99,21 @@ namespace Toulbar2RestCore.Controllers
         [HttpPost]
         public ResponseModel Post([FromBody]WCNFModel value)
         {
+            this._logger.LogInformation(LoggerEvents.RequestPassed, "Processing request ...");
             //string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
             string directoryPath = @"";
             string fileFullPath;
             Dictionary<int, string> dict;
             Console.WriteLine("Tworze plik dla toulbara");
+            
             (fileFullPath, dict) = CreateWCNFFile(value, directoryPath);
+            this._logger.LogInformation(LoggerEvents.FileCreated, "File created, file path: {PATH}", fileFullPath);
             var output = new StringBuilder();
 
             try
             {
                 Process process = new Process();
+                this._logger.LogInformation(LoggerEvents.Process, "Starting process ...");
                 Console.WriteLine("Startuje proces");
                 process.StartInfo.FileName = $@"{directoryPath}toulbar2";
                 process.StartInfo.Arguments = $"-s {fileFullPath}";
@@ -112,8 +127,10 @@ namespace Toulbar2RestCore.Controllers
                 string error = process.StandardError.ReadToEnd();
                 output.Append(process.StandardOutput.ReadToEnd());
                 process.Close();
+                this._logger.LogInformation(LoggerEvents.Process, "Process finished");
                 Console.WriteLine("Koncze proces");
                 System.IO.File.Delete(fileFullPath);
+                this._logger.LogInformation(LoggerEvents.Process, "File deleted, filepath: {PATH}", fileFullPath);
                 Console.WriteLine("Usuwam plik");
                 //return CreateResponse(output.ToString(),dict);
                 /*
@@ -133,6 +150,7 @@ namespace Toulbar2RestCore.Controllers
                 output.Append("\nWystąpił błąd! Czy na pewno wysłałeś poprawny plik? Logi:\n");
                 output.Append(e.StackTrace);
                 Console.WriteLine($"Stacktrace: {e.StackTrace}");
+                this._logger.LogError(LoggerEvents.ProblemError,e, "An exception ocurred");
                 //Console.Out.WriteLine(e.StackTrace);
             }
 
@@ -187,6 +205,7 @@ namespace Toulbar2RestCore.Controllers
             string fileFullPath = $"{directoryPath}{random.Next(10000)}tmp.wcsp";
             System.IO.File.WriteAllText(fileFullPath, sb.ToString());
 
+             this._logger.LogInformation(LoggerEvents.ResponseCreated, "Succesfully created response");
             return (fileFullPath, reverseVariablesMap);
         }
 
