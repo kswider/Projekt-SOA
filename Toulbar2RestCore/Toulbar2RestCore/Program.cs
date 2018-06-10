@@ -31,29 +31,21 @@ namespace Toulbar2RestCore
             string certificatePassword = certificateSettings.GetValue<string>("password");
 
             var certificate = new X509Certificate2(certificateFileName, certificatePassword);
-
-            var host = new WebHostBuilder()
-            .UseKestrel(
-                options =>
-                {
-                    options.AddServerHeader = false;
-                    options.Listen(IPAddress.Any, 443, listenOptions =>
-                    {
-                        listenOptions.UseHttps(certificate);
-                    });
-                }
-            )
-            .UseConfiguration(config)
-            .UseContentRoot(Directory.GetCurrentDirectory())
-            .UseStartup<Startup>()
-            .Build();
-
-            host.Run();
+            BuildWebHost(args, certificate).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHost BuildWebHost(string[] args, X509Certificate2 certificate) =>
         new WebHostBuilder()
-                .UseKestrel()
+                .UseKestrel(
+                    options =>
+                    {
+                        options.AddServerHeader = false;
+                        options.Listen(IPAddress.Any, 443, listenOptions =>
+                        {
+                            listenOptions.UseHttps(certificate);
+                        });
+                    }
+                )
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
