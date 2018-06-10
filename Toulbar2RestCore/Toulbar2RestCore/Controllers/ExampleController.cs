@@ -70,7 +70,7 @@ namespace Toulbar2RestCore.Controllers
                 Console.Out.WriteLine(e.StackTrace);
                 this._logger.LogError(LoggerEvents.ExampleFileError, e, "An exception occured");
             }
-            this._logger.LogCritical(LoggerEvents.ExampleFileError, new Exception(), "###############################################################");
+            
             return output.ToString();
         }
     }
