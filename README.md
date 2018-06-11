@@ -2,7 +2,11 @@
 
 ## Prerequisites
 
-Go to **certs** directory and rename **key.pfx.example** to **key.pfx**.
+1. Go to **certs** directory and rename **key.pfx.example** to **key.pfx**.
+2. Add following line to **hosts** file (/etc/hosts in Linux):
+~~~
+127.0.1.1   t2r.localhost
+~~~
 
 ## Running container
 
@@ -17,7 +21,7 @@ soa                 | Now listening on: https://0.0.0.0:8080
 soa                 | Application started. Press Ctrl+C to shut down.
 ~~~
 
-3. Open https://0.0.0.0:8080
+3. Open https://t2r.localhost:8081
 
 ## Notes
 
