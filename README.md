@@ -21,7 +21,7 @@ soa                 | Now listening on: https://0.0.0.0:8080
 soa                 | Application started. Press Ctrl+C to shut down.
 ~~~
 
-3. Open https://t2r.localhost:8081
+3. Open https://t2r.localhost
 
 ## Notes
 

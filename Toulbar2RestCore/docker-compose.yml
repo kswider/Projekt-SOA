@@ -7,8 +7,8 @@ services:
     user: ${DEV_UID:-1000}:${DEV_GID:-100}
     build: ./Toulbar2RestCore
     ports:
-     - 8080:8080
-     - 8081:8081
+     - 80:8080
+     - 443:8081
     volumes:
      - ./Toulbar2RestCore:/app
      - ./certs:/app/certs
