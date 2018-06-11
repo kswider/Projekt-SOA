@@ -17,7 +17,8 @@
 2. Wait for server start with message as following:
 
 ~~~
-soa                 | Now listening on: https://0.0.0.0:8080
+soa                 | Now listening on: http://[::]:8080          
+soa                 | Now listening on: https://[::]:8081
 soa                 | Application started. Press Ctrl+C to shut down.
 ~~~
 
