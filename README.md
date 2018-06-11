@@ -1,5 +1,9 @@
 # toulbar2 REST
 
+## Architecture
+
+![architecture](architecture.jpg)
+
 ## Prerequisites
 
 1. Go to **certs** directory and rename **key.pfx.example** to **key.pfx**.
