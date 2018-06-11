@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -19,33 +18,12 @@ namespace Toulbar2RestCore
     {
         public static void Main(string[] args)
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddEnvironmentVariables()
-                .AddJsonFile("certificate.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"certificate.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
-                .Build();
-
-            var certificateSettings = config.GetSection("certificateSettings");
-            string certificateFileName = certificateSettings.GetValue<string>("filename");
-            string certificatePassword = certificateSettings.GetValue<string>("password");
-
-            var certificate = new X509Certificate2(certificateFileName, certificatePassword);
-            BuildWebHost(args, certificate).Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args, X509Certificate2 certificate) =>
-        new WebHostBuilder()
-                .UseKestrel(
-                    options =>
-                    {
-                        options.AddServerHeader = false;
-                        options.Listen(IPAddress.Any, 8080, listenOptions =>
-                        {
-                            listenOptions.UseHttps(certificate);
-                        });
-                    }
-                )
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            var builder = WebHost.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
@@ -62,7 +40,8 @@ namespace Toulbar2RestCore
                     logging.AddFilter("System", LogLevel.Debug)
                         .AddFilter<DebugLoggerProvider>("Microsoft", LogLevel.Error);
                 })
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>();
+            return builder;
+        }
     }
 }

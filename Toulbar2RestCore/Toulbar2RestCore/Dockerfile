@@ -2,6 +2,7 @@ FROM microsoft/dotnet:2.1-sdk AS build
 
 # Expose ports
 EXPOSE 8080
+EXPOSE 8081
 
 RUN apt-get update && apt-get install -y gcc
 
