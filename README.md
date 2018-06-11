@@ -12,7 +12,7 @@
 
 1. Run command:
 
-    $ docker-compose up
+    $ docker-compose up --build
 
 2. Wait for server start with message as following:
 
