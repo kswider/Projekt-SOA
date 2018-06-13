@@ -22,13 +22,12 @@ namespace Toulbar2RestCore.Controllers
             this._logger = logger.CreateLogger("Toulbar2RestCore.Controllers.ProblemLoaderController");
         }
 
-        // POST: api/ProblemLoader
+        // POST: Toulbar2REST/ProblemLoader/wcnf
         [Route("Toulbar2REST/ProblemLoader/wcsp")]
         [HttpPost]
         public ResponseModel Post([FromBody]WCSPModel value)
         {
             this._logger.LogInformation(LoggerEvents.RequestPassed, "Processing request ...");
-            //string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
             string directoryPath = @"";
             string fileFullPath;
             Dictionary<int, string> dict;
@@ -42,7 +41,6 @@ namespace Toulbar2RestCore.Controllers
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
-                //process.StartInfo.RedirectStandardInput = true;
                 process.StartInfo.Verb = "runas";
                 process.Start();
                 process.WaitForExit();
@@ -50,19 +48,6 @@ namespace Toulbar2RestCore.Controllers
                 output.Append(process.StandardOutput.ReadToEnd());
                 process.Close();
                 System.IO.File.Delete(fileFullPath);
-                //return CreateResponse(output.ToString(),dict);
-                /*
-                if (System.IO.File.Exists($@"{directoryPath}\examples\{id}.res"))
-                {
-                    output.Append("Rozwiązanie problemu:\n");
-                    output.Append(System.IO.File.ReadAllText($@"{directoryPath}\examples\{id}.res"));
-                    System.IO.File.Delete($@"{directoryPath}\examples\{id}.res");
-                }
-                else
-                {
-                    output.Append("Nie znaleziono rozwiązania dla danego problemu!");
-                }
-                */
                 this._logger.LogInformation(LoggerEvents.ProblemLoaded, "Problem succesfully loaded");
             }
             catch (Exception e)
@@ -94,13 +79,12 @@ namespace Toulbar2RestCore.Controllers
             return response;
         }
 
-        // POST: api/ProblemLoader
+        // POST: Toulbar2REST/ProblemLoader/wcnf
         [Route("Toulbar2REST/ProblemLoader/wcnf")]
         [HttpPost]
         public ResponseModel Post([FromBody]WCNFModel value)
         {
             this._logger.LogInformation(LoggerEvents.RequestPassed, "Processing request ...");
-            //string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
             string directoryPath = @"";
             string fileFullPath;
             Dictionary<int, string> dict;
@@ -120,7 +104,6 @@ namespace Toulbar2RestCore.Controllers
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
-                //process.StartInfo.RedirectStandardInput = true;
                 process.StartInfo.Verb = "runas";
                 process.Start();
                 process.WaitForExit();
@@ -132,18 +115,6 @@ namespace Toulbar2RestCore.Controllers
                 System.IO.File.Delete(fileFullPath);
                 this._logger.LogInformation(LoggerEvents.Process, "File deleted, filepath: {PATH}", fileFullPath);
                 Console.WriteLine("Usuwam plik");
-                //return CreateResponse(output.ToString(),dict);
-                /*
-                if (System.IO.File.Exists($@"{directoryPath}\examples\{id}.res"))
-                {
-                    output.Append("Rozwiązanie problemu:\n");
-                    output.Append(System.IO.File.ReadAllText($@"{directoryPath}\examples\{id}.res"));
-                    System.IO.File.Delete($@"{directoryPath}\examples\{id}.res");
-                }
-                else
-                {
-                    output.Append("Nie znaleziono rozwiązania dla danego problemu!");
-                }*/
             }
             catch (Exception e)
             {
@@ -151,7 +122,6 @@ namespace Toulbar2RestCore.Controllers
                 output.Append(e.StackTrace);
                 Console.WriteLine($"Stacktrace: {e.StackTrace}");
                 this._logger.LogError(LoggerEvents.ProblemError,e, "An exception ocurred");
-                //Console.Out.WriteLine(e.StackTrace);
             }
 
             // Creating response:

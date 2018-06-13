@@ -20,12 +20,12 @@ namespace Toulbar2RestCore.Controllers
         public FileController(ILoggerFactory logger){
             this._logger = logger.CreateLogger("Toulbar2RestCore.Controllers.FileController");
         }
-        // POST: api/File
-        [HttpOptions]
+
+        // POST: Toulbar2REST/File
+        [HttpPost]
         public string Post([FromBody]RawTextFileModel file)
         { 
             this._logger.LogInformation(LoggerEvents.RequestPassed, "Processing request");  
-            //string directoryPath = @"C:\Users\Krzysiek\Desktop\resttest\";
             string directoryPath = @"";
             Random random = new Random();
             string fileFullPath = $"{directoryPath}{random.Next(10000)}tmp.{file.Format}";
@@ -40,27 +40,12 @@ namespace Toulbar2RestCore.Controllers
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
-                //process.StartInfo.WorkingDirectory = @"C:\Program Files (x86)\toulbar2 0.9.8\bin\";
-                //process.StartInfo.RedirectStandardInput = true;
                 process.StartInfo.Verb = "runas";
                 process.Start();
-                //process.WaitForExit();
-                output.Append("Alokacja pamięci dla zmiennych:\n");
+                process.WaitForExit();
                 output.Append(process.StandardOutput.ReadToEnd());
                 string error = process.StandardError.ReadToEnd();
                 process.Close();
-                /*
-                if (System.IO.File.Exists($"{fileFullPath}sol"))
-                {
-                    output.Append("Rozwiązanie problemu:\n");
-                    output.Append(System.IO.File.ReadAllText($"{fileFullPath}sol"));
-                    System.IO.File.Delete($"{fileFullPath}sol");
-                }
-                else
-                {
-                    output.Append("Nie znaleziono rozwiązania dla danego problemu!");
-                }
-                */
                 System.IO.File.Delete(fileFullPath);
                 this._logger.LogInformation(LoggerEvents.FileLoaded, "File succesfully loaded");
 
