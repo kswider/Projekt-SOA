@@ -27,7 +27,7 @@ namespace Toulbar2RestCore.Controllers
         {
             
             this._logger.LogInformation(LoggerEvents.RequestPassed, "Processing request ...");
-            string directoryPath = @"";
+            string directoryPath = @"app";
             string trailer = ".wcsp";
             StringBuilder output = new StringBuilder();
             try
