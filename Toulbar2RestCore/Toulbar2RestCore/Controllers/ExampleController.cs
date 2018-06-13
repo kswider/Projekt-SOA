@@ -22,7 +22,7 @@ namespace Toulbar2RestCore.Controllers
         }
 
         // GET: Toulbar2REST/Example
-        [HttpGet]
+        [HttpGet("{id}")]
         public string Get(int id)
         {
             
