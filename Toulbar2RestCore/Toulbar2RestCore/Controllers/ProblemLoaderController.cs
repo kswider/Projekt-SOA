@@ -60,11 +60,11 @@ namespace Toulbar2RestCore.Controllers
 
             // Creating response:
             var response = new ResponseModel();
-            Regex rgx = new Regex(@"(New solution:) (\d+) (.*\n) (.*)");
+            var rgx = new Regex(@"(New solution:) (\d+) (.*\n) (.*)");
             var match = rgx.Match(output.ToString());
             int maxWeight = value.Functions.Select(x => x.Weight).Sum();
             int weight = int.Parse(match.Groups[2].Value);
-            response.AccomplishementPercentage = (maxWeight - weight) / (double)maxWeight;
+            response.AccomplishementPercentage = (maxWeight - weight) / (double)maxWeight * 100;
             string[] variables = match.Groups[4].Value.Split(" ");
             int counter = 1;
             foreach (string variable in variables)
@@ -74,6 +74,11 @@ namespace Toulbar2RestCore.Controllers
                 counter++;
             }
 
+            var rgx2 = new Regex(@"Optimum: \d+ in (\d+) .*and (\d+)");
+            match = rgx2.Match(output.ToString());
+            response.Memory = int.Parse(match.Groups[1].Value);
+            response.Time = int.Parse(match.Groups[2].Value);
+            
             this._logger.LogInformation(LoggerEvents.ResponseCreated, "Succesfully created response");
 
             return response;

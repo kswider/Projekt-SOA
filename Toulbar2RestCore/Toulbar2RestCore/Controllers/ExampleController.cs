@@ -34,7 +34,7 @@ namespace Toulbar2RestCore.Controllers
             {
                 Process process = new Process();
                 process.StartInfo.FileName = $"{directoryPath}toulbar2";
-                process.StartInfo.Arguments = $"-s {directoryPath}\\examples\\{id}{trailer}";
+                process.StartInfo.Arguments = $"-s {directoryPath}/examples/{id}{trailer}";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
