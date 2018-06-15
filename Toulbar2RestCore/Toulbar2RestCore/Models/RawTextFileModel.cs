@@ -7,7 +7,7 @@ namespace Toulbar2RestCore.Models
 {
     public class RawTextFileModel
     {
-        public string Format { get; set; }
-        public string Data { get; set; }
+        public string Type { get; set; }
+        public string Content { get; set; }
     }
 }

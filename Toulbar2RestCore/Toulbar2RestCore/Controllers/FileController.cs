@@ -31,8 +31,8 @@ namespace Toulbar2RestCore.Controllers
             this._logger.LogInformation(LoggerEvents.RequestPassed, "Processing request");  
             string directoryPath = @"";
             Random random = new Random();
-            string fileFullPath = $"{directoryPath}{random.Next(10000)}tmp.{file.Format}";
-            System.IO.File.WriteAllText(fileFullPath, file.Data);
+            string fileFullPath = $"{directoryPath}{random.Next(10000)}tmp.{file.Type}";
+            System.IO.File.WriteAllText(fileFullPath, file.Content);
 
             StringBuilder output = new StringBuilder();
             try
