@@ -136,7 +136,7 @@ namespace Toulbar2RestCore.Controllers
             var match = rgx.Match(output.ToString());
             int maxWeight = value.Functions.Select(x => x.Weight).Sum();
             int weight = int.Parse(match.Groups[2].Value);
-            response.AccomplishementPercentage = (maxWeight - weight) / (double)maxWeight;
+            response.AccomplishementPercentage = (maxWeight - weight) / (double)maxWeight * 100;
             string[] variables = match.Groups[4].Value.Split(" ");
             int counter = 1;
             foreach (string variable in variables)
