@@ -52,7 +52,7 @@ namespace Toulbar2RestCore.Controllers
                 process.Close();
                 System.IO.File.Delete(fileFullPath);
                 this._logger.LogInformation(LoggerEvents.FileLoaded, "File succesfully loaded");
-                Console.WriteLine($"wyjscie z toulbara: output.ToString()");
+                Console.WriteLine($"wyjscie z toulbara: {output.ToString()}");
 
             }
             catch (Exception e)
