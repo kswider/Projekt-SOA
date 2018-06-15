@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Toulbar2RestCore.Models;
 using Microsoft.Extensions.Logging;
+using System.Text.RegularExpressions;
+using Toulbar2RestCore.Models.InternalClasses;
+
 namespace Toulbar2RestCore.Controllers
 {
     [Produces("application/json")]
@@ -23,7 +26,7 @@ namespace Toulbar2RestCore.Controllers
 
         // POST: Toulbar2REST/File
         [HttpPost]
-        public string Post([FromBody]RawTextFileModel file)
+        public ResponseModel Post([FromBody]RawTextFileModel file)
         { 
             this._logger.LogInformation(LoggerEvents.RequestPassed, "Processing request");  
             string directoryPath = @"";
@@ -58,8 +61,30 @@ namespace Toulbar2RestCore.Controllers
                 this._logger.LogError(LoggerEvents.FileError, e, "An exception occured");
             }
 
-            return output.ToString();
-        }
+            // Creating response:
+            var response = new ResponseModel();
+            var rgx = new Regex(@"(New solution:) (\d+) (.*\n) (.*)");
+            var match = rgx.Match(output.ToString());
+            //int maxWeight = value.Functions.Select(x => x.Weight).Sum();
+            int weight = int.Parse(match.Groups[2].Value);
+            response.AccomplishementPercentage = 100;// (maxWeight - weight) / (double)maxWeight * 100;
+            string[] variables = match.Groups[4].Value.Split(" ");
+            int counter = 1;
+            foreach (string variable in variables)
+            {
+                int v = int.Parse(variable);
+                response.Variables.Add(new Variable() { Name = counter.ToString(), Value = v });
+                counter++;
+            }
 
+            var rgx2 = new Regex(@"Optimum: \d+ in (\d+) .*and (\d+)");
+            match = rgx2.Match(output.ToString());
+            response.Memory = int.Parse(match.Groups[1].Value);
+            response.Time = int.Parse(match.Groups[2].Value);
+
+            this._logger.LogInformation(LoggerEvents.ResponseCreated, "Succesfully created response");
+
+            return response;
+        }
     }
 }
