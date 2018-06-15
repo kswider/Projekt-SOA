@@ -39,6 +39,7 @@ namespace Toulbar2RestCore.Controllers
             {
                 Process process = new Process();
                 process.StartInfo.FileName = $"{directoryPath}toulbar2";
+
                 process.StartInfo.Arguments = $"-s {fileFullPath}";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardOutput = true;
@@ -46,11 +47,12 @@ namespace Toulbar2RestCore.Controllers
                 process.StartInfo.Verb = "runas";
                 process.Start();
                 process.WaitForExit();
-                output.Append(process.StandardOutput.ReadToEnd());
                 string error = process.StandardError.ReadToEnd();
+                output.Append(process.StandardOutput.ReadToEnd());
                 process.Close();
                 System.IO.File.Delete(fileFullPath);
                 this._logger.LogInformation(LoggerEvents.FileLoaded, "File succesfully loaded");
+                Console.WriteLine($"wyjscie z toulbara: output.ToString()");
 
             }
             catch (Exception e)
