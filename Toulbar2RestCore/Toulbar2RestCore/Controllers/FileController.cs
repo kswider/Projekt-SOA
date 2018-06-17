@@ -42,7 +42,7 @@ namespace Toulbar2RestCore.Controllers
             var response = new ResponseModel();
             response.RawOutput = output;
             int maxWeight = Toulbar2Operations.CalcualteMaxWeightFromFile(file.Content, file.Type);
-            var rgx = new Regex(@"New solution: .*\n (.*)\nOptimum: (\d+) in (\d+) .* and (\d+.?\d*)");
+            var rgx = new Regex(@"New solution: .*\n (.*)\nOptimum: (\d+) in (\d+) .* and (\d+\.?\d*)");
             var match = rgx.Match(output);
             if (match.Success)
             {
