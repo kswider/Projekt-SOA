@@ -42,7 +42,8 @@ namespace Toulbar2RestCore.Controllers
             var response = new ResponseModel();
             response.RawOutput = output;
             int maxWeight = Toulbar2Operations.CalcualteMaxWeightFromFile(file.Content, file.Type);
-            var rgx = new Regex(@"New solution: .*\n (.*)\nOptimum: (\d+) in (\d+) .* and (\d+\.?\d*)");
+            var rgx = new Regex(@"New solution: .*\n (.*)");
+            var rgx2 = new Regex(@"Optimum: (\d+) in (\d+) .* and (\d+\.?\d*)");
             var match = rgx.Match(output);
             if (match.Success)
             {
@@ -55,16 +56,19 @@ namespace Toulbar2RestCore.Controllers
                     response.Variables.Add(new Variable() { Name = counter.ToString(), Value = v });
                     counter++;
                 }
-
-                int weight = 0;
-                int.TryParse(match.Groups[2].Value, out weight);
-                response.AccomplishementPercentage = (maxWeight - weight) / (double)maxWeight * 100;
-                int memory = 0;
-                int.TryParse(match.Groups[3].Value, out memory);
-                response.Memory = memory;
-                double time = 0;
-                double.TryParse(match.Groups[4].Value, out time);
-                response.Time = time;
+                match = rgx2.Match(output);
+                if (match.Success)
+                {
+                    int weight = 0;
+                    int.TryParse(match.Groups[2].Value, out weight);
+                    response.AccomplishementPercentage = (maxWeight - weight) / (double)maxWeight * 100;
+                    int memory = 0;
+                    int.TryParse(match.Groups[3].Value, out memory);
+                    response.Memory = memory;
+                    double time = 0;
+                    double.TryParse(match.Groups[4].Value, out time);
+                    response.Time = time;
+                }
             }
             else
             {
