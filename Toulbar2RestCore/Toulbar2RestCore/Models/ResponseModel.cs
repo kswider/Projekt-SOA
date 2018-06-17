@@ -12,6 +12,7 @@ namespace Toulbar2RestCore.Models
         public double AccomplishementPercentage { get; set; }
         public double Time { get; set; }
         public int Memory { get; set; }
+        public string RawOutput { get; set; }
 
     }
 }

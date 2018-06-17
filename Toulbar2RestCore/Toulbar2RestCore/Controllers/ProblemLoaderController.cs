@@ -60,6 +60,7 @@ namespace Toulbar2RestCore.Controllers
 
             // Creating response:
             var response = new ResponseModel();
+            response.RawOutput = output.ToString();
             var rgx = new Regex(@"(New solution:) (\d+) (.*\n) (.*)");
             var match = rgx.Match(output.ToString());
             int maxWeight = value.Functions.Select(x => x.Weight).Sum();
@@ -131,6 +132,7 @@ namespace Toulbar2RestCore.Controllers
 
             // Creating response:
             var response = new ResponseModel();
+            response.RawOutput = output.ToString();
             var rgx = new Regex(@"(New solution:) (\d+) (.*\n) (.*)");
             var match = rgx.Match(output.ToString());
             int maxWeight = value.Functions.Select(x => x.Weight).Sum();
