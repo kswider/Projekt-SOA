@@ -13,8 +13,8 @@ using Toulbar2RestCore.Models.InternalClasses;
 
 namespace Toulbar2RestCore.Controllers
 {
-    
-    
+     
+     
     [Produces("application/json")]
     [Route("Toulbar2REST/Example")]
     public class ExampleController : Controller
