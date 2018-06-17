@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Toulbar2RestCore.Common
@@ -40,5 +41,39 @@ namespace Toulbar2RestCore.Common
             }
             return output.ToString();
         }
+
+        public static int CalcualteMaxWeightFromFile(string file, string problemType)
+        {
+            int maxWeight = 0;
+            var lines = file.Split('\n');
+            switch (problemType)
+            {
+                case "wcsp":
+                    var rgx = new Regex(@"(\d+)$");
+                    lines.Skip(2).ToList().ForEach(x =>
+                    {
+                        var match = rgx.Match(x);
+                        maxWeight += int.Parse(match.Groups[1].Value);
+                    });
+                    break;
+
+                case "wcnf":
+                    rgx = new Regex(@"^(\d+)");
+                    foreach (var line in lines)
+                    {
+                        if (line[0] == 'c' || line[0] == 'p')
+                            continue;
+                        else
+                        {
+                            var match = rgx.Match(line);
+                            maxWeight += int.Parse(match.Groups[1].Value);
+                        }
+
+                    }
+                    break;
+            }
+            return maxWeight;
+        }
     }
 }
+

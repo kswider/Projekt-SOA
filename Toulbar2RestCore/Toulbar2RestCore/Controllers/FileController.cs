@@ -43,9 +43,9 @@ namespace Toulbar2RestCore.Controllers
             response.RawOutput = output;
             var rgx = new Regex(@"(New solution:) (\d+) (.*\n) (.*)");
             var match = rgx.Match(output);
-            //int maxWeight = value.Functions.Select(x => x.Weight).Sum();
+            int maxWeight = Toulbar2Operations.CalcualteMaxWeightFromFile(file.Content,file.Type);
             int weight = int.Parse(match.Groups[2].Value);
-            response.AccomplishementPercentage = 100;// (maxWeight - weight) / (double)maxWeight * 100;
+            response.AccomplishementPercentage = (maxWeight - weight) / (double)maxWeight * 100;
             string[] variables = match.Groups[4].Value.Split(" ");
             int counter = 1;
             foreach (string variable in variables)
