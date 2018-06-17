@@ -52,7 +52,7 @@ namespace Toulbar2RestCore.Controllers
                 foreach (string variable in variables)
                 {
                     int v = int.Parse(variable);
-                    response.Variables.Add(new Variable() { Name = dict[counter], Value = v });
+                    response.Variables.Add(new Variable() { Name = counter.ToString(), Value = v });
                     counter++;
                 }
 
