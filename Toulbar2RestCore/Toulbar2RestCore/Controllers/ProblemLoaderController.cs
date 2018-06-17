@@ -75,11 +75,11 @@ namespace Toulbar2RestCore.Controllers
                 counter++;
             }
 
-            var rgx2 = new Regex(@"Optimum: \d+ in (\d+) .*and (\d+)");
+            var rgx2 = new Regex(@"Optimum: \d+ in (\d+) .*and ([0-9]*.?[0-9]*)");
             match = rgx2.Match(output.ToString());
             response.Memory = int.Parse(match.Groups[1].Value);
-            response.Time = int.Parse(match.Groups[2].Value);
-            
+            response.Time = double.Parse(match.Groups[2].Value);
+
             this._logger.LogInformation(LoggerEvents.ResponseCreated, "Succesfully created response");
 
             return response;
@@ -147,10 +147,10 @@ namespace Toulbar2RestCore.Controllers
                 counter++;
             }
 
-            var rgx2 = new Regex(@"Optimum: \d+ in (\d+) .*and (\d+)");
+            var rgx2 = new Regex(@"Optimum: \d+ in (\d+) .*and ([0-9]*.?[0-9]*)");
             match = rgx2.Match(output.ToString());
             response.Memory = int.Parse(match.Groups[1].Value);
-            response.Time = int.Parse(match.Groups[2].Value);
+            response.Time = double.Parse(match.Groups[2].Value);
 
             this._logger.LogInformation(LoggerEvents.ResponseCreated, "Succesfully created response");
 
