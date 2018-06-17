@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Toulbar2RestCore.Common;
 using Toulbar2RestCore.Models;
 using Toulbar2RestCore.Models.InternalClasses;
 
@@ -32,28 +33,8 @@ namespace Toulbar2RestCore.Controllers
             this._logger.LogInformation(LoggerEvents.RequestPassed, "Processing request ...");
             string directoryPath = @"app";
             string trailer = ".wcsp";
-            StringBuilder output = new StringBuilder();
-            try
-            {
-                Process process = new Process();
-                process.StartInfo.FileName = $"toulbar2";
-                process.StartInfo.Arguments = $"-s /{directoryPath}/examples/{id}{trailer}";
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-                process.StartInfo.Verb = "runas";
-                process.Start();
-                process.WaitForExit();
-                string error = process.StandardError.ReadToEnd();
-                output.Append(process.StandardOutput.ReadToEnd());
-                process.Close();
-            }
-            catch (Exception e)
-            {
-                output.Append(e.StackTrace);
-                Console.Out.WriteLine(e.StackTrace);
-                this._logger.LogError(LoggerEvents.ExampleFileError, e, "An exception occured");
-            }
+            string fileFullPath = $"/{directoryPath}/examples/{id}{trailer}";
+            string output = Toulbar2Operations.RunToulbar2(fileFullPath, _logger);
 
             // Creating response:
             var response = new ResponseModel();

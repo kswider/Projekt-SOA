@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Toulbar2RestCore.Models;
 using Toulbar2RestCore.Models.InternalClasses;
 using Microsoft.Extensions.Logging;
+using Toulbar2RestCore.Common;
 
 namespace Toulbar2RestCore.Controllers
 {
@@ -32,37 +33,13 @@ namespace Toulbar2RestCore.Controllers
             string fileFullPath;
             Dictionary<int, string> dict;
             (fileFullPath, dict) = CreateWCSPFile(value, directoryPath);
-            var output = new StringBuilder();
-            try
-            {
-                Process process = new Process();
-                process.StartInfo.FileName = $"{directoryPath}toulbar2";
-                process.StartInfo.Arguments = $"-s {fileFullPath}";
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-                process.StartInfo.Verb = "runas";
-                process.Start();
-                process.WaitForExit();
-                string error = process.StandardError.ReadToEnd();
-                output.Append(process.StandardOutput.ReadToEnd());
-                process.Close();
-                System.IO.File.Delete(fileFullPath);
-                this._logger.LogInformation(LoggerEvents.ProblemLoaded, "Problem succesfully loaded");
-            }
-            catch (Exception e)
-            {
-                output.Append("\nWystąpił błąd! Czy na pewno wysłałeś poprawny plik? Logi:\n");
-                output.Append(e.StackTrace);
-                Console.Out.WriteLine(e.StackTrace);
-                this._logger.LogError(LoggerEvents.ProblemError, e, "An exception occured");
-            }
+            string output = Toulbar2Operations.RunToulbar2(fileFullPath, _logger);
 
             // Creating response:
             var response = new ResponseModel();
-            response.RawOutput = output.ToString();
+            response.RawOutput = output;
             var rgx = new Regex(@"(New solution:) (\d+) (.*\n) (.*)");
-            var match = rgx.Match(output.ToString());
+            var match = rgx.Match(output);
             int maxWeight = value.Functions.Select(x => x.Weight).Sum();
             int weight = int.Parse(match.Groups[2].Value);
             response.AccomplishementPercentage = (maxWeight - weight) / (double)maxWeight * 100;
@@ -76,7 +53,7 @@ namespace Toulbar2RestCore.Controllers
             }
 
             var rgx2 = new Regex(@"Optimum: \d+ in (\d+) .*and ([0-9]*.?[0-9]*)");
-            match = rgx2.Match(output.ToString());
+            match = rgx2.Match(output);
             response.Memory = int.Parse(match.Groups[1].Value);
             response.Time = double.Parse(match.Groups[2].Value);
 
@@ -94,47 +71,16 @@ namespace Toulbar2RestCore.Controllers
             string directoryPath = @"";
             string fileFullPath;
             Dictionary<int, string> dict;
-            Console.WriteLine("Tworze plik dla toulbara");
             
             (fileFullPath, dict) = CreateWCNFFile(value, directoryPath);
             this._logger.LogInformation(LoggerEvents.FileCreated, "File created, file path: {PATH}", fileFullPath);
-            var output = new StringBuilder();
-
-            try
-            {
-                Process process = new Process();
-                this._logger.LogInformation(LoggerEvents.Process, "Starting process ...");
-                Console.WriteLine("Startuje proces");
-                process.StartInfo.FileName = $@"{directoryPath}toulbar2";
-                process.StartInfo.Arguments = $"-s {fileFullPath}";
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-                process.StartInfo.Verb = "runas";
-                process.Start();
-                process.WaitForExit();
-                string error = process.StandardError.ReadToEnd();
-                output.Append(process.StandardOutput.ReadToEnd());
-                process.Close();
-                this._logger.LogInformation(LoggerEvents.Process, "Process finished");
-                Console.WriteLine("Koncze proces");
-                System.IO.File.Delete(fileFullPath);
-                this._logger.LogInformation(LoggerEvents.Process, "File deleted, filepath: {PATH}", fileFullPath);
-                Console.WriteLine("Usuwam plik");
-            }
-            catch (Exception e)
-            {
-                output.Append("\nWystąpił błąd! Czy na pewno wysłałeś poprawny plik? Logi:\n");
-                output.Append(e.StackTrace);
-                Console.WriteLine($"Stacktrace: {e.StackTrace}");
-                this._logger.LogError(LoggerEvents.ProblemError,e, "An exception ocurred");
-            }
+            string output = Toulbar2Operations.RunToulbar2(fileFullPath, _logger);
 
             // Creating response:
             var response = new ResponseModel();
-            response.RawOutput = output.ToString();
+            response.RawOutput = output;
             var rgx = new Regex(@"(New solution:) (\d+) (.*\n) (.*)");
-            var match = rgx.Match(output.ToString());
+            var match = rgx.Match(output);
             int maxWeight = value.Functions.Select(x => x.Weight).Sum();
             int weight = int.Parse(match.Groups[2].Value);
             response.AccomplishementPercentage = (maxWeight - weight) / (double)maxWeight * 100;
@@ -148,7 +94,7 @@ namespace Toulbar2RestCore.Controllers
             }
 
             var rgx2 = new Regex(@"Optimum: \d+ in (\d+) .*and ([0-9]*.?[0-9]*)");
-            match = rgx2.Match(output.ToString());
+            match = rgx2.Match(output);
             response.Memory = int.Parse(match.Groups[1].Value);
             response.Time = double.Parse(match.Groups[2].Value);
 

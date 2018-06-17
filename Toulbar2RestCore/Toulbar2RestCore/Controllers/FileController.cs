@@ -11,6 +11,7 @@ using Toulbar2RestCore.Models;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
 using Toulbar2RestCore.Models.InternalClasses;
+using Toulbar2RestCore.Common;
 
 namespace Toulbar2RestCore.Controllers
 {
@@ -34,40 +35,14 @@ namespace Toulbar2RestCore.Controllers
             string fileFullPath = $"{directoryPath}{random.Next(10000)}tmp.{file.Type}";
             System.IO.File.WriteAllText(fileFullPath, file.Content);
 
-            StringBuilder output = new StringBuilder();
-            try
-            {
-                Process process = new Process();
-                process.StartInfo.FileName = $"{directoryPath}toulbar2";
-
-                process.StartInfo.Arguments = $"-s {fileFullPath}";
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-                process.StartInfo.Verb = "runas";
-                process.Start();
-                process.WaitForExit();
-                string error = process.StandardError.ReadToEnd();
-                output.Append(process.StandardOutput.ReadToEnd());
-                process.Close();
-                System.IO.File.Delete(fileFullPath);
-                this._logger.LogInformation(LoggerEvents.FileLoaded, "File succesfully loaded");
-                Console.WriteLine($"wyjscie z toulbara: {output.ToString()}");
-
-            }
-            catch (Exception e)
-            {
-                output.Append("\nWystąpił błąd! Czy na pewno wysłałeś poprawny plik? Logi:\n");
-                output.Append(e.StackTrace);
-                Console.Out.WriteLine(e.StackTrace);
-                this._logger.LogError(LoggerEvents.FileError, e, "An exception occured");
-            }
+            string output = Toulbar2Operations.RunToulbar2(fileFullPath, _logger);
+            System.IO.File.Delete(fileFullPath);
 
             // Creating response:
             var response = new ResponseModel();
-            response.RawOutput = output.ToString();
+            response.RawOutput = output;
             var rgx = new Regex(@"(New solution:) (\d+) (.*\n) (.*)");
-            var match = rgx.Match(output.ToString());
+            var match = rgx.Match(output);
             //int maxWeight = value.Functions.Select(x => x.Weight).Sum();
             int weight = int.Parse(match.Groups[2].Value);
             response.AccomplishementPercentage = 100;// (maxWeight - weight) / (double)maxWeight * 100;
@@ -81,7 +56,7 @@ namespace Toulbar2RestCore.Controllers
             }
 
             var rgx2 = new Regex(@"Optimum: \d+ in (\d+) .*and ([0-9]*.?[0-9]*)");
-            match = rgx2.Match(output.ToString());
+            match = rgx2.Match(output);
             response.Memory = int.Parse(match.Groups[1].Value);
             response.Time = double.Parse(match.Groups[2].Value);
 
