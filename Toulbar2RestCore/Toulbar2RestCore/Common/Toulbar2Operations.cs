@@ -53,7 +53,9 @@ namespace Toulbar2RestCore.Common
                     lines.Skip(2).ToList().ForEach(x =>
                     {
                         var match = rgx.Match(x);
-                        maxWeight += int.Parse(match.Groups[1].Value);
+                        int result;
+                        if (int.TryParse(match.Groups[1].Value, out result))
+                            maxWeight += result;
                     });
                     break;
 
@@ -66,9 +68,10 @@ namespace Toulbar2RestCore.Common
                         else
                         {
                             var match = rgx.Match(line);
-                            maxWeight += int.Parse(match.Groups[1].Value);
+                            int result;
+                            if(int.TryParse(match.Groups[1].Value,out result))
+                                maxWeight += result;
                         }
-
                     }
                     break;
             }
