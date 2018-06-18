@@ -150,7 +150,7 @@ namespace Toulbar2RestCore.Controllers
                 {
                     sb.Append($"{variablesMap[arg]} ");
                 }
-                sb.Append($"-1 {f.Name} {f.Weight}"); // TODO
+                sb.Append($"-1 {f.Name} 0 0"); // TODO
             }
             
             Random random = new Random();
