@@ -33,7 +33,7 @@ namespace Toulbar2RestCore.Controllers
             string fileFullPath;
             Dictionary<int, string> dict;
             (fileFullPath, dict) = CreateWCSPFile(value, directoryPath);
-            string output = Toulbar2Operations.RunToulbar2(fileFullPath, _logger);
+            string output = Toulbar2Operations.RunToulbar2(fileFullPath, true, _logger);
 
             // Creating response:
             var response = new ResponseModel();
@@ -84,7 +84,7 @@ namespace Toulbar2RestCore.Controllers
             
             (fileFullPath, dict) = CreateWCNFFile(value, directoryPath);
             this._logger.LogInformation(LoggerEvents.FileCreated, "File created, file path: {PATH}", fileFullPath);
-            string output = Toulbar2Operations.RunToulbar2(fileFullPath, _logger);
+            string output = Toulbar2Operations.RunToulbar2(fileFullPath, true, _logger);
 
             // Creating response:
             var response = new ResponseModel();
