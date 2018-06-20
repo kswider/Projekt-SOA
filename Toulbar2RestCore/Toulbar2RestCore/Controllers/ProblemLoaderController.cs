@@ -133,7 +133,7 @@ namespace Toulbar2RestCore.Controllers
             sb.AppendLine($"problemloader {value.Variables.Count} {value.Variables.Select(x => x.MaxVal + 1).Max()} {value.Functions.Count} {value.UpperBound}");
             var variablesMap = new Dictionary<string, int>();
             var reverseVariablesMap = new Dictionary<int, string>();
-            int counter = 0;
+            int counter = 1;
             foreach(Variable v in value.Variables)
             {
                 variablesMap.Add(v.Name, counter);
