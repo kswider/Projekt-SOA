@@ -35,7 +35,7 @@ namespace Toulbar2RestCore.Controllers
             string fileFullPath = $"{directoryPath}{random.Next(10000)}tmp.{file.Type}";
             System.IO.File.WriteAllText(fileFullPath, file.Content);
 
-            string output = Toulbar2Operations.RunToulbar2(fileFullPath, _logger);
+            string output = Toulbar2Operations.RunToulbar2(fileFullPath, true, _logger);
             System.IO.File.Delete(fileFullPath);
 
             // Creating response:

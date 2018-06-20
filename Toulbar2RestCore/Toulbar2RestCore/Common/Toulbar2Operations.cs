@@ -11,7 +11,7 @@ namespace Toulbar2RestCore.Common
 {
     public class Toulbar2Operations
     {
-        public static string RunToulbar2(string fileFullPath, ILogger logger)
+        public static string RunToulbar2(string fileFullPath,bool deleteAfter, ILogger logger)
         {
             var output = new StringBuilder();
             try
@@ -30,8 +30,11 @@ namespace Toulbar2RestCore.Common
                 output.Append(process.StandardOutput.ReadToEnd());
                 process.Close();
                 logger.LogInformation(LoggerEvents.Process, "Process finished");
-                System.IO.File.Delete(fileFullPath);
-                logger.LogInformation(LoggerEvents.Process, "File deleted, filepath: {PATH}", fileFullPath);
+                if (deleteAfter)
+                {
+                    System.IO.File.Delete(fileFullPath);
+                    logger.LogInformation(LoggerEvents.Process, "File deleted, filepath: {PATH}", fileFullPath);
+                }
             }
             catch (Exception e)
             {

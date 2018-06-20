@@ -34,7 +34,7 @@ namespace Toulbar2RestCore.Controllers
             string directoryPath = @"app";
             string trailer = ".wcsp";
             string fileFullPath = $"/{directoryPath}/examples/{id}{trailer}";
-            string output = Toulbar2Operations.RunToulbar2(fileFullPath, _logger);
+            string output = Toulbar2Operations.RunToulbar2(fileFullPath,false _logger);
 
             // Creating response:
             var response = new ResponseModel();
