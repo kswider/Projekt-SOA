@@ -56,13 +56,13 @@ namespace Toulbar2RestCore.Controllers
                 if (match.Success)
                 {
                     int weight = 0;
-                    int.TryParse(match.Groups[2].Value, out weight);
+                    int.TryParse(match.Groups[1].Value, out weight);
                     response.AccomplishementPercentage = (maxWeight - weight) / (double)maxWeight * 100;
                     int memory = 0;
-                    int.TryParse(match.Groups[3].Value, out memory);
+                    int.TryParse(match.Groups[2].Value, out memory);
                     response.Memory = memory;
                     double time = 0;
-                    double.TryParse(match.Groups[4].Value, out time);
+                    double.TryParse(match.Groups[3].Value, out time);
                     response.Time = time;
                 }
             }
@@ -107,13 +107,13 @@ namespace Toulbar2RestCore.Controllers
                 if (match.Success)
                 {
                     int weight = 0;
-                    int.TryParse(match.Groups[2].Value, out weight);
+                    int.TryParse(match.Groups[1].Value, out weight);
                     response.AccomplishementPercentage = (maxWeight - weight) / (double)maxWeight * 100;
                     int memory = 0;
-                    int.TryParse(match.Groups[3].Value, out memory);
+                    int.TryParse(match.Groups[2].Value, out memory);
                     response.Memory = memory;
                     double time = 0;
-                    double.TryParse(match.Groups[4].Value, out time);
+                    double.TryParse(match.Groups[3].Value, out time);
                     response.Time = time;
                 }
             }
